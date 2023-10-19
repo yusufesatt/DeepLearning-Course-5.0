@@ -1,0 +1,5 @@
+Deep Learning:
+https://www.kaggle.com/code/kanncaa1/deep-learning-tutorial-for-beginners#Conclusion
+
+Convolutional Neural Network (CNN):
+https://www.kaggle.com/code/kanncaa1/convolutional-neural-network-cnn-tutorial/notebook
