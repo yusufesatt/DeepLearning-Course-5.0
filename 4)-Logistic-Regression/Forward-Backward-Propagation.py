@@ -90,21 +90,39 @@ def sigmoid(z):
 def forward_propagation(w,b,x_train,y_train):
     z = np.dot(w.T, x_train) + b # weight ve x_train çarpımından sonra bias ile toplamım sonucu z değerim ortaya çıkar.
     y_head = sigmoid(z) # 0-1 arası değerim
-    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head)
-    cost = (np.sum(loss))/x_train.shape[1]
+    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head) # Loss function
+    # Gerçek etiketler (y_train) ve model tahminlerinin (y_head) logaritmasıyla hesaplanır. 
+    # İkinci ve dördüncü terimler, doğru sınıf tahminlerinde logaritmaları sıfır yapar
+    cost = (np.sum(loss))/x_train.shape[1] # Cost function
+    # Hesaplanan log kaybı değerlerinin ortalamasını alarak toplam kaybı hesaplar.
+    # Daha sonra bu değer, veri noktalarının sayısına (x_train.shape[1]) bölünür. 
+    # Böylece, her veri noktası için ortalama kaybı temsil eden bir değeri elde edersiniz.
     return cost
 
 # %%
 # Forward-Backward propagation 
+
 def forward_backward_propagation(w,b,x_train,y_train):
     # Forward propagation
     z = np.dot(w.T, x_train) + b # weight ve x_train çarpımından sonra bias ile toplamım sonucu z değerim ortaya çıkar.
     y_head = sigmoid(z) # 0-1 arası değerim
-    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head)
-    cost = (np.sum(loss))/x_train.shape[1]
+    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head) # Loss function
+    # Gerçek etiketler (y_train) ve model tahminlerinin (y_head) logaritmasıyla hesaplanır. 
+    # İkinci ve dördüncü terimler, doğru sınıf tahminlerinde logaritmaları sıfır yapar
+    cost = (np.sum(loss))/x_train.shape[1] # Cost function
+    # Hesaplanan log kaybı değerlerinin ortalamasını alarak toplam kaybı hesaplar.
+    # Daha sonra bu değer, veri noktalarının sayısına (x_train.shape[1]) bölünür. 
+    # Böylece, her veri noktası için ortalama kaybı temsil eden bir değeri elde edersiniz.
+    
     # Backward propagation
-    derivative_weight = (np.dot(x_train,((y_head-y_train).T)))/x_train.shape[1]
+    derivative_weight = (np.dot(x_train,((y_head-y_train).T)))/x_train.shape[1] 
+    # x_train ve y_head arasındaki farkların transpozunu alır
+    # Bu farklar, modelin tahminlerinin gerçek değerlerden ne kadar uzak olduğunu temsil eder.
+    # Ardından x_train ile bu farkları iç içe çarpar ve ortalama değerini alır (x_train.shape[1] ile bölerek).
+    # Bu, ağırlıkların güncellenmesinde kullanılacak gradyanı temsil eder.
     derivative_bias = np.sum(y_head-y_train/x_train.shape[1])
+    # y_head - y_train ifadesini alır ve x_train.shape[1] ile böler.
+    # Bu, bias teriminin güncellenmesinde kullanılacak gradyanı temsil eder.
     gradients = ("derivative_weight: ", derivative_weight, "derivative_bias: ", derivative_bias)
     return cost,gradients
 
