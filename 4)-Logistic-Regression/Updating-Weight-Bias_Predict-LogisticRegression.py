@@ -64,17 +64,17 @@ x_test = X_test_flatten.T
 y_train = Y_train.T
 y_test = Y_test.T
 
-print("x train: ", x_train.shape)
-print("x test: ", x_test.shape)
-print("y train: ", y_train.shape)
-print("y test: ",y_test.shape)
+print("x train: ", x_train.shape) #OUT: (4096, 348)
+print("x test: ", x_test.shape) #OUT: (4096, 62)
+print("y train: ", y_train.shape) #OUT: (1, 348)
+print("y test: ",y_test.shape) #OUT: (1, 62)
 
 # %%
 # Initialize parameterlerimizi import edelim
 
 def initialize_weights_and_bias(dimension):
     w = np.full((dimension,1),0.01) # full() fonksiyonu ile matrix oluşturuyoruz. burada feature'ım 4096 yani 4069 tane 1 sütundan oluşan ve içi 0.01'lerden oluşan matrixdir.
-    b = 0 # bias = 0
+    b = 0.0 # bias = 0.0
     return w, b
 
 w,b = initialize_weights_and_bias(4096)
@@ -97,7 +97,7 @@ def sigmoid(z):
 def forward_propagation(w,b,x_train,y_train):
     z = np.dot(w.T, x_train) + b # weight ve x_train çarpımından sonra bias ile toplamım sonucu z değerim ortaya çıkar.
     y_head = sigmoid(z) # 0-1 arası değerim
-    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head) # Loss function
+    loss = -y_train*np.log(y_head)-(1-y_train)*np.log(1-y_head) # Loss function
     # Gerçek etiketler (y_train) ve model tahminlerinin (y_head) logaritmasıyla hesaplanır. 
     # İkinci ve dördüncü terimler, doğru sınıf tahminlerinde logaritmaları sıfır yapar
     cost = (np.sum(loss))/x_train.shape[1] # Cost function
@@ -115,7 +115,7 @@ def forward_backward_propagation(w,b,x_train,y_train):
     # Forward propagation
     z = np.dot(w.T, x_train) + b # weight ve x_train çarpımından sonra bias ile toplamım sonucu z değerim ortaya çıkar.
     y_head = sigmoid(z) # 0-1 arası değerim
-    loss = y_train+np.log(y_head)-(1-y_train)-np.log(1-y_head) # Loss function
+    loss = -y_train*np.log(y_head)-(1-y_train)*np.log(1-y_head) # Loss function
     # Gerçek etiketler (y_train) ve model tahminlerinin (y_head) logaritmasıyla hesaplanır. 
     # İkinci ve dördüncü terimler, doğru sınıf tahminlerinde logaritmaları sıfır yapar
     cost = (np.sum(loss))/x_train.shape[1] # Cost function
@@ -129,7 +129,9 @@ def forward_backward_propagation(w,b,x_train,y_train):
     # Bu farklar, modelin tahminlerinin gerçek değerlerden ne kadar uzak olduğunu temsil eder.
     # Ardından x_train ile bu farkları iç içe çarpar ve ortalama değerini alır (x_train.shape[1] ile bölerek).
     # Bu, ağırlıkların güncellenmesinde kullanılacak gradyanı temsil eder.
-    derivative_bias = np.sum(y_head-y_train/x_train.shape[1])
+    derivative_bias = np.sum(y_head - y_train) / x_train.shape[1]
+
+    
     # y_head - y_train ifadesini alır ve x_train.shape[1] ile böler.
     # Bu, bias teriminin güncellenmesinde kullanılacak gradyanı temsil eder.
     gradients = {"derivative_weight": derivative_weight, "derivative_bias": derivative_bias}
