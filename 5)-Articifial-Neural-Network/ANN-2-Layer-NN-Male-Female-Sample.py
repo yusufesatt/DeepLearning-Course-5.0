@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 # %%
 
-train_path = r"C:/Users/yusufesat/Desktop/Deep-Learning-5.0/4)-Logistic-Regression/dataset1"
+train_path = r"C:\Users\yusuf\Desktop\DeepLearning-Course-5.0\Datasets\Male-Female-Classification\Validation"
 classes_id = []
 target = []
 for idx, classes in enumerate(os.listdir(train_path)):
@@ -88,7 +88,7 @@ def initialize_parameters_and_layer_sizes_NN(x_train, y_train):
     # 3 node'dan oluşan 2 katmanlı bir neural network
     parameters = {"weight1": np.random.randn(3, x_train.shape[0]) * 0.1,  # 3 node'un x_trainin feature'larına karşılık gelen ağırlıklar.
                   # 1. katmandaki bias değerleri başlangıçta 0 atanır
-                  "bias1": np.zeros((3, 1)),
+                  "bias1": np.zeros((3,1)),
                   # 2. katmandaki nodeların output özelliklerine karşılık gelir.
                   "weight2": np.random.randn(y_train.shape[0], 3) * 0.1,
                   "bias2": np.zeros((y_train.shape[0], 1))}
@@ -100,6 +100,7 @@ def sigmoid(z):
     y_head = 1/(1+np.exp(-z))
     return y_head
 
+
 # %%
 # Forward propagation
 # Piksel ile weightleri çarpıp bias ile toplayıp Z elde ediyoruz
@@ -110,7 +111,7 @@ def forward_propagation_NN(x_train, parameters):
     # weightle piksellerimi çarpıyorum
     Z1 = np.dot(parameters["weight1"], x_train) + parameters["bias1"]
     A1 = np.tanh(Z1)  # tanh'a yukarda bulduğum değeri buluyorum
-    Z2 = np.dot(parameters["weight2"],A1) + parameters["bias2"] # weightle a1i çarpıyorum
+    Z2 = np.dot(parameters["weight2"], A1) + parameters["bias2"]  # weightle a1i çarpıyorum
     A2 = sigmoid(Z2)  # sigmoide sokup a2 değerimi alıyorum yani y_head
 
     cache = {"Z1": Z1,
@@ -145,17 +146,22 @@ def compute_cost_NN(A2, Y, parameters):
 
 
 def backward_propagation_NN(parameters, cache, X, Y):
+    
+    dZ2 = cache["A2"] - Y
+    dW2 = np.dot(dZ2, cache["A1"].T) / X.shape[1]
+    db2 = np.sum(dZ2, axis=1, keepdims=True) / X.shape[1]
+    dZ1 = np.dot(parameters["weight2"].T, dZ2) * (1 - np.power(cache["A1"], 2))
+    # power() - üssü
+    dW1 = np.dot(dZ1, X.T) / X.shape[1]
+    db1 = np.sum(dZ1, axis=1, keepdims=True) / X.shape[1]
 
-    dZ2 = cache["A2"]-Y
-    dW2 = np.dot(dZ2,cache["A1"].T)/X.shape[1]
-    db2 = np.sum(dZ2,axis =1,keepdims=True)/X.shape[1]
-    dZ1 = np.dot(parameters["weight2"].T,dZ2)*(1 - np.power(cache["A1"], 2))
-    dW1 = np.dot(dZ1,X.T)/X.shape[1]
-    db1 = np.sum(dZ1,axis =1,keepdims=True)/X.shape[1]
-    grads = {"dweight1": dW1,
-             "dbias1": db1,
-             "dweight2": dW2,
-             "dbias2": db2}
+    grads = {
+        "dweight1": dW1,
+        "dbias1": db1,
+        "dweight2": dW2,
+        "dbias2": db2
+    }
+
     return grads
 
 
@@ -174,12 +180,12 @@ def backward_propagation_NN(parameters, cache, X, Y):
 """
 
 
-def update_parameters_NN(parameters, grads, learning_rate = 0.01):
+def update_parameters_NN(parameters, grads, learning_rate=0.01):
     parameters = {"weight1": parameters["weight1"]-learning_rate*grads["dweight1"],
                   "bias1": parameters["bias1"]-learning_rate*grads["dbias1"],
                   "weight2": parameters["weight2"]-learning_rate*grads["dweight2"],
                   "bias2": parameters["bias2"]-learning_rate*grads["dbias2"]}
-    
+
     return parameters
 
 # %%
@@ -238,4 +244,4 @@ def two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations):
     print("test accuracy: {} %".format(100 - np.mean(np.abs(y_prediction_test - y_test)) * 100))
     return parameters
 
-parameters = two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations=4500)
+parameters = two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations=5000)

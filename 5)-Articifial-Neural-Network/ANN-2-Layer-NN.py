@@ -44,8 +44,7 @@ print("Y shape: ", Y.shape)  # Output:410,1
 
 
 # Verimin %15ini test için ayırıyorum ve değişkenlerime train,test atıyorum
-X_train, X_test, Y_train, Y_test = train_test_split(
-    X, Y, test_size=0.15, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.15, random_state=42)
 #
 # 1. Veriyi `x` (bağımsız değişkenler) ve `y` (bağımlı değişken) olarak ayırın.
 # 2. `train_test_split` fonksiyonu ile veriyi rastgele iki parçaya bölün (genellikle bir eğitim seti ve bir test seti).
@@ -60,10 +59,8 @@ number_of_test = X_test.shape[0]  # Output 62, **
 # Y datamız bir vektör fakat X datalarımız bir matrix halinde biz model eğitebilmek için X datamızı da vektör haline getireceğiz yani 2D boyutlu hale getireceğiz.
 #
 # 64x64 piksellik görüntü tek boyutlu şekilde 64 * 64 = 4096 boyutunda bir vektör elde ederim.
-X_train_flatten = X_train.reshape(
-    number_of_train, X_train.shape[1]*X_train.shape[2])
-X_test_flatten = X_test.reshape(
-    number_of_test, X_test.shape[1]*X_test.shape[2])
+X_train_flatten = X_train.reshape(number_of_train, X_train.shape[1]*X_train.shape[2])
+X_test_flatten = X_test.reshape(number_of_test, X_test.shape[1]*X_test.shape[2])
 
 print("X train flatten: ", X_train_flatten.shape)  # Output: (348, 4096)
 print("X test flatten: ", X_test_flatten.shape)  # Output: (62, 4096)
@@ -111,8 +108,7 @@ def forward_propagation_NN(x_train, parameters):
     # weightle piksellerimi çarpıyorum
     Z1 = np.dot(parameters["weight1"], x_train) + parameters["bias1"]
     A1 = np.tanh(Z1)  # tanh'a yukarda bulduğum değeri buluyorum
-    Z2 = np.dot(parameters["weight2"], A1) + \
-        parameters["bias2"]  # weightle a1i çarpıyorum
+    Z2 = np.dot(parameters["weight2"], A1) + parameters["bias2"]  # weightle a1i çarpıyorum
     A2 = sigmoid(Z2)  # sigmoide sokup a2 değerimi alıyorum yani y_head
 
     cache = {"Z1": Z1,
@@ -147,6 +143,7 @@ def compute_cost_NN(A2, Y, parameters):
 
 
 def backward_propagation_NN(parameters, cache, X, Y):
+    
     dZ2 = cache["A2"] - Y
     dW2 = np.dot(dZ2, cache["A1"].T) / X.shape[1]
     db2 = np.sum(dZ2, axis=1, keepdims=True) / X.shape[1]
