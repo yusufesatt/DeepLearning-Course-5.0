@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 # %%
 
 # Resimlerim x bunun içerisinde
-x_l = np.load(r"C:\Users\yusufesat\Desktop\Deep-Learning-5.0\3)-Deep-Learning-ve-Dataset-Tanıtımı\input\Sign-language-digits-dataset\X.npy")
+x_l = np.load(r'C:\Users\yusuf\Desktop\DeepLearning-Course-5.0\Datasets\Sign-Language-Digits/X.npy')
 # Resimlerimin classları bunun içinde
-Y_l = np.load(r"C:\Users\yusufesat\Desktop\Deep-Learning-5.0\3)-Deep-Learning-ve-Dataset-Tanıtımı\input\Sign-language-digits-dataset\Y.npy")
+Y_l = np.load(r'C:\Users\yusuf\Desktop\DeepLearning-Course-5.0\Datasets\Sign-Language-Digits/Y.npy')
 img_size = 64  # Image size
 plt.subplot(1, 2, 1)  # 1 satır 2 sütunluk 1. grafiğim
 # x_l içinden 260. index'e sahip olan resmi alıp 64x64lük resme dönüştürüyor
