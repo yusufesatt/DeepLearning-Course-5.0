@@ -139,6 +139,7 @@ plt.legend()
 plt.show()
 # epoch = 250 daha güzel sonuç veriyor.
 
+
 # %%
 
 # long Short Term Memory (LSTM's)

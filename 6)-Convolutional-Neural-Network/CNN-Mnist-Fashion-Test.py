@@ -106,20 +106,21 @@ from keras.callbacks import ReduceLROnPlateau
 # Model create
 # conv => max pool => dropout => conv => max pool => dropout => fully connected (2 layer)
 model = Sequential()
-
-model.add(Conv2D(filters = 8, kernel_size = (5,5), padding = "same",
-                 activation='relu', input_shape=(28,28,1)))
+#
+model.add(Conv2D(filters = 8, kernel_size = (5,5),padding = 'Same', 
+                 activation ='relu', input_shape = (28,28,1)))
 model.add(MaxPool2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 #
-model.add(Conv2D(filters = 16, kernel_size=(3,3), padding="same", activation='relu'))
+model.add(Conv2D(filters = 16, kernel_size = (3,3),padding = 'Same', 
+                 activation ='relu'))
 model.add(MaxPool2D(pool_size=(2,2), strides=(2,2)))
 model.add(Dropout(0.25))
-# Fully connected
+# fully connected
 model.add(Flatten())
-model.add(Dense(256, activation = 'relu'))
+model.add(Dense(256, activation = "relu"))
 model.add(Dropout(0.5))
-model.add(Dense(10, activation = 'softmax'))
+model.add(Dense(10, activation = "softmax"))
 
 # %%
 
@@ -135,8 +136,8 @@ model.compile(optimizer = optimizer, loss = "categorical_crossentropy", metrics=
 # %%
 # Epoch and batch size
 
-epochs = 30
-batch_size = 150
+epochs = 10
+batch_size = 250
 
 # %%
 # Data augmentation
@@ -171,7 +172,6 @@ plt.xlabel("Number of Epochs")
 plt.ylabel("Loss")
 plt.legend()
 plt.show()
-
 # %%
 
 # confusion matrix
@@ -192,5 +192,11 @@ plt.ylabel("True Label")
 plt.title("Confusion Matrix")
 plt.show()
 
+
 # %%
+
+
+
+
+
 
